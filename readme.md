@@ -2,7 +2,16 @@
 
 ## How to run
 1. Install dependencies with `npm i`
-2. Run code with `node --loader ts-node/esm index.ts`
+2. Run code with `npm start`
+3. Test code with `npm test`
+
+## Notes
+
+- Not sure if you wanted a frontend for this or not. Happy to make one if necessary.
+- This is the simplest and most readable way to solve the problem I could come up with.
+- Problems I encountered were the usual off by 1 errors, including the grid and the robot coordinates.
+- Entry point is `index.ts`. Each file has a test file with the same name.
+- Additional command types can be added in the `data.ts` file, this will automatically update all the types (`export type Command = (typeof commands)[number]`).
 
 ## Developer Programming Problem
 ### Introduction
