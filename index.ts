@@ -1,43 +1,61 @@
-import { Robot } from "./types";
+import { Data, Robot } from "./types";
 import { sampleInput } from "./data";
-import { existsInScents, parseData, runCommand } from "./lib";
+import { existsInFallen, parseData, runCommand } from "./lib";
 
-export function main(input: string) {
-  const scents: Robot[] = [];
-  const { robots, grid } = parseData(input);
+export function run({ robots, grid }: Data) {
   const results: string[] = [];
-  robots.forEach((r) => {
+  const fallenRobots: Robot[] = [];
+
+  robots.forEach((r, i) => {
+    console.log(`\nRobot ${i + 1} ---`);
+
     r.commands.some((c, j) => {
-      const nextPosition = runCommand(c, { ...r });
+      const nextPos = runCommand(c, { ...r });
+
+      console.log(
+        `Step ${j + 1}`,
+        { x: r.x, y: r.y, direction: r.direction },
+        c,
+      );
 
       // Strip the commands so that we can compare different robots
       const { commands, ...robot } = r;
 
-      if (existsInScents(scents, nextPosition)) {
+      if (existsInFallen(fallenRobots, nextPos)) {
         // Skip this step as it killed another robot
         return;
       }
 
       if (
-        nextPosition.y > grid.y ||
-        nextPosition.y < 0 ||
-        nextPosition.x > grid.x ||
-        nextPosition.x < 0
+        nextPos.y > grid.y ||
+        nextPos.y < 0 ||
+        nextPos.x > grid.x ||
+        nextPos.x < 0
       ) {
         // Out of bounds
-        scents.push(nextPosition);
-        // Finish command loop
+        fallenRobots.push(nextPos);
+        console.log(
+          `Step ${j + 2}`,
+          { x: nextPos.x, y: nextPos.y, direction: nextPos.direction },
+          "LOST",
+        );
+        // Finish command loop early
         results.push(`${robot.x}${robot.y}${robot.direction}LOST`);
         return true;
       }
 
       // Update to new position and direction
-      r.x = nextPosition.x;
-      r.y = nextPosition.y;
-      r.direction = nextPosition.direction;
+      r.x = nextPos.x;
+      r.y = nextPos.y;
+      r.direction = nextPos.direction;
 
       if (j === commands.length - 1) {
-        // Finish command loop
+        // Final command loop - finish
+        console.log(`Step ${j + 2}`, {
+          x: r.x,
+          y: r.y,
+          direction: r.direction,
+        });
         results.push(`${r.x}${r.y}${r.direction}`);
         return true;
       }
@@ -45,11 +63,17 @@ export function main(input: string) {
   });
 
   // { results: [ '11E', '33NLOST', '23S' ] }
-  console.log('Input:')
-  console.log(input)
-  console.log('\nResult:');
-  console.log(results.join("\n"))
+
+  console.log("\nResult:");
+  console.log(results.join("\n"));
   return results.join("\n");
+}
+
+export function main(input: string) {
+  console.log("Input:", input);
+  const data = parseData(input);
+  console.log("\nData:", data);
+  return run(data);
 }
 
 main(sampleInput);

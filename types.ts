@@ -14,3 +14,8 @@ export interface Grid {
   x: number;
   y: number;
 }
+
+export interface Data {
+  grid: Grid;
+  robots: Robot[];
+}

@@ -1,4 +1,4 @@
-import { existsInScents, parseData, runCommand } from "../lib";
+import { existsInFallen, parseData, runCommand } from "../lib";
 import { Command, Direction, Robot } from "../types";
 import { invalidCoords, invalidGrid } from "./index.test";
 
@@ -76,11 +76,11 @@ describe("existsInScents", () => {
 
   test("returns true if robot exists in scents", () => {
     const robot: Robot = { x: 1, y: 1, direction: "N", commands: [] };
-    expect(existsInScents(scents, robot)).toBeTruthy();
+    expect(existsInFallen(scents, robot)).toBeTruthy();
   });
 
   test("returns false if robot does not exist in scents", () => {
     const robot: Robot = { x: 3, y: 3, direction: "W", commands: [] };
-    expect(existsInScents(scents, robot)).toBeFalsy();
+    expect(existsInFallen(scents, robot)).toBeFalsy();
   });
 });

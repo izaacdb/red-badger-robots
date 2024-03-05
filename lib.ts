@@ -103,8 +103,8 @@ export function runCommand(command: Command, robot: Robot) {
   return robot;
 }
 
-export function existsInScents(scents: Robot[], robot: Robot) {
-  return scents.some(
+export function existsInFallen(fallenRobots: Robot[], robot: Robot) {
+  return fallenRobots.some(
     (r) =>
       r.x === robot.x && r.y === robot.y && r.direction === robot.direction,
   );

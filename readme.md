@@ -5,13 +5,84 @@
 2. Run code with `npm start`
 3. Test code with `npm test`
 
-## Notes
+## Izaac's Notes
 
 - Not sure if you wanted a frontend for this or not. Happy to make one if necessary.
 - This is the simplest and most readable way to solve the problem I could come up with.
+- Each robot has a state, x, y, direction and commands.
+- We don't need to render a grid at all - we could scale the solution up to a very large grid without issue:
+  - See `expect an enormous grid to run in less than 1 s`. This runs in 11ms on my laptop.
+- Additional command types can be added in the `data.ts` file:
+  - This will automatically update all the types (`export type Command = (typeof commands)[number]`).
 - Problems I encountered were the usual off by 1 errors, including the grid and the robot coordinates.
+- It didn't make sense to place the scent on the grid with this solution, as we'd have to write lots of extra checks.
+  - Instead, we store the state of the fallen robot in scents.
+  - If our current robot's next state is equal to a fallen robot state, we skip that step.
 - Entry point is `index.ts`. Each file has a test file with the same name.
-- Additional command types can be added in the `data.ts` file, this will automatically update all the types (`export type Command = (typeof commands)[number]`).
+
+## Expected output
+````
+red-badger-robots on  main [!] is 📦 v1.0.0 via  v18.17.1
+❯ npm start
+
+> red-badger-robots-2@1.0.0 start
+> ts-node index.ts
+
+Input: 53
+11E RFRFRFRF
+32N FRRFLLFFRRFLL
+03W LLFFFLFLFL
+
+Data: {
+  robots: [
+    { x: 1, y: 1, direction: 'E', commands: [Array] },
+    { x: 3, y: 2, direction: 'N', commands: [Array] },
+    { x: 0, y: 3, direction: 'W', commands: [Array] }
+  ],
+  grid: { x: 5, y: 3 }
+}
+
+Robot 1 ---
+Step 1 { x: 1, y: 1, direction: 'E' } R
+Step 2 { x: 1, y: 1, direction: 'S' } F
+Step 3 { x: 1, y: 0, direction: 'S' } R
+Step 4 { x: 1, y: 0, direction: 'W' } F
+Step 5 { x: 0, y: 0, direction: 'W' } R
+Step 6 { x: 0, y: 0, direction: 'N' } F
+Step 7 { x: 0, y: 1, direction: 'N' } R
+Step 8 { x: 0, y: 1, direction: 'E' } F
+Step 9 { x: 1, y: 1, direction: 'E' }
+
+Robot 2 ---
+Step 1 { x: 3, y: 2, direction: 'N' } F
+Step 2 { x: 3, y: 3, direction: 'N' } R
+Step 3 { x: 3, y: 3, direction: 'E' } R
+Step 4 { x: 3, y: 3, direction: 'S' } F
+Step 5 { x: 3, y: 2, direction: 'S' } L
+Step 6 { x: 3, y: 2, direction: 'E' } L
+Step 7 { x: 3, y: 2, direction: 'N' } F
+Step 8 { x: 3, y: 3, direction: 'N' } F
+Step 9 { x: 3, y: 4, direction: 'N' } LOST
+
+Robot 3 ---
+Step 1 { x: 0, y: 3, direction: 'W' } L
+Step 2 { x: 0, y: 3, direction: 'S' } L
+Step 3 { x: 0, y: 3, direction: 'E' } F
+Step 4 { x: 1, y: 3, direction: 'E' } F
+Step 5 { x: 2, y: 3, direction: 'E' } F
+Step 6 { x: 3, y: 3, direction: 'E' } L
+Step 7 { x: 3, y: 3, direction: 'N' } F
+Step 8 { x: 3, y: 3, direction: 'N' } L
+Step 9 { x: 3, y: 3, direction: 'W' } F
+Step 10 { x: 2, y: 3, direction: 'W' } L
+Step 11 { x: 2, y: 3, direction: 'S' }
+
+Result:
+11E
+33NLOST
+23S
+````
+
 
 ## Developer Programming Problem
 ### Introduction
