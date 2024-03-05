@@ -18,9 +18,6 @@ export function run({ robots, grid }: Data) {
         c,
       );
 
-      // Strip the commands so that we can compare different robots
-      const { commands, ...robot } = r;
-
       if (existsInFallen(fallenRobots, nextPos)) {
         // Skip this step as it killed another robot
         return;
@@ -39,8 +36,8 @@ export function run({ robots, grid }: Data) {
           { x: nextPos.x, y: nextPos.y, direction: nextPos.direction },
           "LOST",
         );
-        // Finish command loop early
-        results.push(`${robot.x}${robot.y}${robot.direction}LOST`);
+        // Finish command loop early - record lost position
+        results.push(`${r.x}${r.y}${r.direction}LOST`);
         return true;
       }
 
@@ -49,8 +46,8 @@ export function run({ robots, grid }: Data) {
       r.y = nextPos.y;
       r.direction = nextPos.direction;
 
-      if (j === commands.length - 1) {
-        // Final command loop - finish
+      if (j === r.commands.length - 1) {
+        // Final command loop reached - record position
         console.log(`Step ${j + 2}`, {
           x: r.x,
           y: r.y,
