@@ -68,19 +68,19 @@ describe("runCommand", () => {
   });
 });
 
-describe("existsInScents", () => {
-  const scents: Robot[] = [
+describe("existsInFallen", () => {
+  const fallenRobots: Robot[] = [
     { x: 1, y: 1, direction: "N", commands: [] },
     { x: 2, y: 2, direction: "E", commands: [] },
   ];
 
-  test("returns true if robot exists in scents", () => {
+  test("returns true if robot exists in fallenRobots", () => {
     const robot: Robot = { x: 1, y: 1, direction: "N", commands: [] };
-    expect(existsInFallen(scents, robot)).toBeTruthy();
+    expect(existsInFallen(fallenRobots, robot)).toBeTruthy();
   });
 
-  test("returns false if robot does not exist in scents", () => {
+  test("returns false if robot does not exist in fallenRobots", () => {
     const robot: Robot = { x: 3, y: 3, direction: "W", commands: [] };
-    expect(existsInFallen(scents, robot)).toBeFalsy();
+    expect(existsInFallen(fallenRobots, robot)).toBeFalsy();
   });
 });
